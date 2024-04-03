@@ -25,7 +25,7 @@ module.exports = function () {
           phone: "9998867024",
           marks: 1000,
           total_marks: 1000,
-          std: "1",
+          std: "1st",
         });
         userData
           .save()
