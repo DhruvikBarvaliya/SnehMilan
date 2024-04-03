@@ -11,29 +11,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send(`Welcome To SnehMilan Portal, Currently You are in ${req.app.get('env')} Mode`);
+  res.send(
+    `Welcome To SnehMilan Portal, Currently You are in ${req.app.get(
+      "env"
+    )} Mode`
+  );
 });
 
 app.use("/api", indexRouter);
 
 app.use(function (req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   res.status(err.status || 500);
   res.json({ status: false, message: "Page Not Found", err });
 });
 
 app.listen(port, () => {
-  if (env == 'development') {
+  if (env == "development") {
     console.log(`Server is Running on Port No :- http://localhost:${port}`);
   } else {
-    console.log(`Server is Running on :- https://hrms-dhy1.onrender.com`);
+    console.log(`Server is Running on :- https://snehmilan.onrender.com`);
   }
 });

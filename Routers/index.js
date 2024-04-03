@@ -7,10 +7,6 @@ router.get("/", (req, res) => {
   res.send(`Welcome To SnehMilan Portal With Version V1`);
 });
 
-router.use(
-  "/v1",
-  AuthRoute,
-  UserRoute,
-);
+router.use("/v1", AuthRoute, UserRoute);
 
 module.exports = router;

@@ -23,9 +23,9 @@ module.exports = function () {
           last_name: "admin",
           full_name: "super admin",
           phone: "9998867024",
-          marks:1000,
-          total_marks:1000,
-          std:"1",
+          marks: 1000,
+          total_marks: 1000,
+          std: "1",
         });
         userData
           .save()
@@ -33,7 +33,8 @@ module.exports = function () {
             console.log(
               `Super Admin Created Successfully with Email "superadmin@gmail.com" witj Password "superadmin" And id ${adminData._id}`
             );
-          }).catch((error) => {
+          })
+          .catch((error) => {
             console.log(error.message);
           });
       }

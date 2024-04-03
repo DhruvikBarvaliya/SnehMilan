@@ -44,7 +44,11 @@ function authorize(roles = []) {
   } catch (err) {
     return res
       .status(500)
-      .json({ status: false, message: 'Server Error', error: err.message || err.toString() });
+      .json({
+        status: false,
+        message: "Server Error",
+        error: err.message || err.toString(),
+      });
   }
 }
 module.exports = authorize;
