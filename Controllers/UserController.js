@@ -155,24 +155,29 @@ module.exports = {
         delete req.body.is_active;
         delete req.body.is_verified;
       }
-      let full_name = "";
 
       if (first_name && middle_name && last_name) {
-        full_name = `${first_name} ${middle_name} ${last_name}`;
+        var full_name = `${first_name} ${middle_name} ${last_name}`;
+        req.body.full_name = full_name;
       } else if (first_name && middle_name) {
-        full_name = `${first_name} ${middle_name}`;
+        var full_name = `${first_name} ${middle_name}`;
+        req.body.full_name = full_name;
       } else if (middle_name && last_name) {
-        full_name = `${middle_name} ${last_name}`;
+        var full_name = `${middle_name} ${last_name}`;
+        req.body.full_name = full_name;
       } else if (first_name && last_name) {
-        full_name = `${first_name} ${last_name}`;
+        var full_name = `${first_name} ${last_name}`;
+        req.body.full_name = full_name;
       } else if (first_name) {
-        full_name = first_name;
+        var full_name = first_name;
+        req.body.full_name = full_name;
       } else if (middle_name) {
-        full_name = middle_name;
+        var full_name = middle_name;
+        req.body.full_name = full_name;
       } else if (last_name) {
-        full_name = last_name;
+        var full_name = last_name;
+        req.body.full_name = full_name;
       }
-      req.body.full_name = full_name;
       const employee = await UserModel.findByIdAndUpdate(
         { _id: user_id },
         req.body,
