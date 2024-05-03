@@ -16,8 +16,10 @@ const EmployeeSchema = new Schema(
     std: {
       type: String,
       enum: [
-        "SKG",
+        "UKG",
         "LKG",
+        "JKG",
+        "SKG",
         "1st",
         "2nd",
         "3rd",
@@ -38,7 +40,7 @@ const EmployeeSchema = new Schema(
     },
     marks: { type: Number, trim: true },
     total_marks: { type: Number, trim: true },
-    percentage: { type: Number, trim: true },
+    percentage: { type: Number, default: 0 },
     phone: { type: String, trim: true },
     email: {
       type: String,

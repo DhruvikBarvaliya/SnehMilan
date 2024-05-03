@@ -4,77 +4,49 @@ const bcrypt = require("bcryptjs");
 module.exports = {
   addUser: async (req, res) => {
     try {
-      const { first_name, middle_name, last_name, marks, total_marks, std } =
-        req.body;
-      if (!first_name) {
-        return res
-          .status(400)
-          .json({ status: false, message: "first_name is Required" });
-      }
-      if (!last_name) {
-        return res
-          .status(400)
-          .json({ status: false, message: "last_name is Required" });
-      }
-      if (!std) {
-        return res
-          .status(400)
-          .json({ status: false, message: "std is Required" });
-      }
-      if (!marks) {
-        return res
-          .status(400)
-          .json({ status: false, message: "marks is Required" });
-      }
-      if (!total_marks) {
-        return res
-          .status(400)
-          .json({ status: false, message: "total_marks is Required" });
+      const {
+        first_name,
+        middle_name,
+        last_name,
+        marks,
+        total_marks,
+        std,
+        percentage,
+      } = req.body;
+
+      if (!first_name || !last_name || !std) {
+        return res.status(400).json({ status: false, message: "Required fields are missing" });
       }
 
-      const percentage = (marks / total_marks) * 100;
-
-      let full_name;
-
-      if (middle_name) {
-        full_name = `${first_name} ${middle_name} ${last_name}`;
-      } else {
-        full_name = `${first_name} ${last_name}`;
+      if (std !== "JKG" && std !== "LKG" && std !== "UKG" && std !== "SKG") {
+        if (!marks || !total_marks) {
+          return res.status(400).json({ status: false, message: "Marks and Total Marks are Required" });
+        }
+        percentage = (marks / total_marks) * 100;
       }
-      const user = await UserModel.findOne({ full_name: full_name });
+
+      const full_name = middle_name ? `${first_name} ${middle_name} ${last_name}` : `${first_name} ${last_name}`;
+      const user = await UserModel.findOne({ full_name });
 
       if (user) {
-        return res
-          .status(400)
-          .json({ status: true, message: "User already registered" });
-      } else {
-        const userData = new UserModel({
-          role: "STUDENT",
-          first_name,
-          middle_name,
-          last_name,
-          full_name: full_name,
-          marks,
-          total_marks,
-          std,
-          percentage,
-        });
-        userRole = userData.role;
-        userData
-          .save()
-          .then((data) => {
-            return res
-              .status(201)
-              .json({ message: "User registered Successfully" });
-          })
-          .catch((error) => {
-            return res.status(400).json({
-              status: false,
-              message: error.errors.std.message,
-              path: error.errors.std.properties.path,
-            });
-          });
+        return res.status(400).json({ status: true, message: "User already registered" });
       }
+
+      const userData = new UserModel({
+        role: "STUDENT",
+        first_name,
+        middle_name,
+        last_name,
+        full_name,
+        marks,
+        total_marks,
+        std,
+        percentage,
+      });
+
+      await userData.save();
+
+      return res.status(201).json({ message: "User registered Successfully" });
     } catch (err) {
       return res.status(500).json({
         status: false,
