@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 module.exports = {
   addUser: async (req, res) => {
     try {
-      const {
+      let {
         first_name,
         middle_name,
         last_name,
@@ -13,12 +13,11 @@ module.exports = {
         std,
         percentage,
       } = req.body;
-
       if (!first_name || !last_name || !std) {
         return res.status(400).json({ status: false, message: "Required fields are missing" });
       }
 
-      if (std !== "JKG" && std !== "LKG" && std !== "UKG" && std !== "SKG") {
+      if (!percentage) {
         if (!marks || !total_marks) {
           return res.status(400).json({ status: false, message: "Marks and Total Marks are Required" });
         }
