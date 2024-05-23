@@ -14,21 +14,32 @@ module.exports = {
         percentage,
       } = req.body;
       if (!first_name || !last_name || !std) {
-        return res.status(400).json({ status: false, message: "Required fields are missing" });
+        return res
+          .status(400)
+          .json({ status: false, message: "Required fields are missing" });
       }
 
       if (!percentage) {
         if (!marks || !total_marks) {
-          return res.status(400).json({ status: false, message: "Marks and Total Marks are Required" });
+          return res
+            .status(400)
+            .json({
+              status: false,
+              message: "Marks and Total Marks are Required",
+            });
         }
         percentage = (marks / total_marks) * 100;
       }
 
-      const full_name = middle_name ? `${first_name} ${middle_name} ${last_name}` : `${first_name} ${last_name}`;
+      const full_name = middle_name
+        ? `${first_name} ${middle_name} ${last_name}`
+        : `${first_name} ${last_name}`;
       const user = await UserModel.findOne({ full_name });
 
       if (user) {
-        return res.status(400).json({ status: true, message: "User already registered" });
+        return res
+          .status(400)
+          .json({ status: true, message: "User already registered" });
       }
 
       const userData = new UserModel({
@@ -77,10 +88,40 @@ module.exports = {
 
       const userData = groupBy(allUser, "std");
 
+      const order = [
+        "UKG",
+        "LKG",
+        "JKG",
+        "SKG",
+        "1st",
+        "2nd",
+        "3rd",
+        "4th",
+        "5th",
+        "6th",
+        "7th",
+        "8th",
+        "9th",
+        "10th",
+        "11th-Com",
+        "11th-Sci",
+        "11th-Art",
+        "12th-Art",
+        "12th-Com",
+        "12th-Sci",
+      ];
+
+      const orderedUserData = order.reduce((acc, std) => {
+        if (userData[std]) {
+          acc[std] = userData[std];
+        }
+        return acc;
+      }, {});
+
       return res.status(200).json({
         status: true,
         message: "Student Get Successfully",
-        userData,
+        userData: orderedUserData,
       });
     } catch (err) {
       return res.status(500).json({
